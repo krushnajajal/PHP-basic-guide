@@ -46,7 +46,7 @@ You need to have Node.js and npm (or yarn) installed on your machine.
     ```
     The application will open in your browser at `http://localhost:3000`.
 
-## 部署 (Deployment)
+##(Deployment)
 
 This application is set up for easy deployment to GitHub Pages.
 
