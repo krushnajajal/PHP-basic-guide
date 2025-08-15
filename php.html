@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive PHP Concepts Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Stone, Slate, Teal) -->
+    <!-- Application Structure Plan: A single-page application with a fixed sidebar for navigation and a main content area. This structure allows users to easily jump between different topics (OOP, MySQL, REST, AJAX) without losing context. The goal is to transform the linear presentation of the source material into an explorable, on-demand learning resource. Interactions like code copying and hover-to-reveal details are included to enhance user engagement and utility. This design prioritizes usability and quick information retrieval over a narrative flow. -->
+    <!-- Visualization & Content Choices: OOP concepts are presented in distinct cards with code examples for clarity. MySQLi vs. PDO is shown in a side-by-side comparison table for direct analysis. The REST and AJAX workflows are visualized using structured HTML/CSS flow diagrams, with hover interactions to provide more detail on each step, making these abstract processes easier to understand. All code examples have a copy button. This approach uses structured HTML and interactivity to explain concepts, avoiding static images or complex libraries. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-block {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #4A5568;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .code-block:hover .copy-btn {
+            opacity: 1;
+        }
+        .flow-step {
+            transition: all 0.3s ease;
+        }
+        .flow-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-white/50 backdrop-blur-sm border-r border-stone-200 p-6 sticky top-0 h-screen hidden md:block">
+            <h1 class="text-xl font-bold text-teal-700 mb-8">PHP & Web Concepts</h1>
+            <nav>
+                <ul class="space-y-2">
+                    <li><a href="#oops" class="font-semibold text-slate-600 hover:text-teal-600">OOPS Concepts</a></li>
+                    <ul class="ml-4 mt-2 space-y-2 border-l border-stone-200 pl-4">
+                        <li><a href="#classes" class="text-sm text-slate-500 hover:text-teal-600">Classes & Objects</a></li>
+                        <li><a href="#constructor" class="text-sm text-slate-500 hover:text-teal-600">Constructor & Destructor</a></li>
+                        <li><a href="#inheritance" class="text-sm text-slate-500 hover:text-teal-600">Inheritance</a></li>
+                        <li><a href="#serialization" class="text-sm text-slate-500 hover:text-teal-600">Serialization</a></li>
+                        <li><a href="#magic-methods" class="text-sm text-slate-500 hover:text-teal-600">Magic Methods</a></li>
+                    </ul>
+                    <li><a href="#mysql" class="font-semibold text-slate-600 hover:text-teal-600 mt-4 block">MySQL with PHP</a></li>
+                    <li><a href="#rest" class="font-semibold text-slate-600 hover:text-teal-600 mt-4 block">REST API</a></li>
+                    <li><a href="#ajax" class="font-semibold text-slate-600 hover:text-teal-600 mt-4 block">AJAX</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10">
+            <div class="max-w-4xl mx-auto">
+                <!-- OOPS Section -->
+                <section id="oops" class="mb-16">
+                    <h2 class="text-3xl font-bold border-b border-stone-200 pb-2 mb-6">Object-Oriented Programming (OOP) Concepts</h2>
+                    <p class="mb-8 text-slate-600">OOP is a programming paradigm based on the concept of "objects", which can contain data in the form of fields (often known as attributes or properties), and code, in the form of procedures (often known as methods). Here are the fundamental concepts in PHP.</p>
+
+                    <!-- Classes and Objects -->
+                    <article id="classes" class="mb-8 p-6 bg-white rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold mb-3">1. Classes and Objects</h3>
+                        <p class="mb-4 text-slate-600">A <strong>class</strong> is a blueprint for creating objects. It defines a set of properties and methods that are common to all objects of one type. An <strong>object</strong> is an instance of a class, with its own specific values for the class's properties.</p>
+                        <div class="code-block bg-slate-800 text-white p-4 rounded-md text-sm">
+                            <button class="copy-btn">Copy</button>
+                            <pre><code>&lt;?php
+class Car {
+    public $color;
+    public $model;
+
+    public function getDescription() {
+        return "This is a " . $this->color . " " . $this->model . ".";
+    }
+}
+
+$myCar = new Car();
+$myCar->color = "red";
+$myCar->model = "Volvo";
+
+echo $myCar->getDescription(); // Output: This is a red Volvo.
+?&gt;</code></pre>
+                        </div>
+                    </article>
+
+                    <!-- Constructor and Destructor -->
+                    <article id="constructor" class="mb-8 p-6 bg-white rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold mb-3">2. Constructor and Destructor</h3>
+                        <p class="mb-4 text-slate-600">A <strong>constructor</strong> (`__construct`) is a special method called when an object is created, used to initialize its properties. A <strong>destructor</strong> (`__destruct`) is called when an object is about to be destroyed, useful for cleanup tasks like closing database connections.</p>
+                        <div class="code-block bg-slate-800 text-white p-4 rounded-md text-sm">
+                            <button class="copy-btn">Copy</button>
+                            <pre><code>&lt;?php
+class Vehicle {
+    public $brand;
+
+    public function __construct($brand) {
+        $this->brand = $brand;
+        echo "A new {$this->brand} vehicle is created.&lt;br&gt;";
+    }
+
+    public function __destruct() {
+        echo "The {$this->brand} vehicle is destroyed.&lt;br&gt;";
+    }
+}
+
+$truck = new Vehicle("Ford");
+// The script ends here, so the destructor is called.
+?&gt;</code></pre>
+                        </div>
+                    </article>
+
+                    <!-- Inheritance -->
+                    <article id="inheritance" class="mb-8 p-6 bg-white rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold mb-3">3. Inheritance</h3>
+                        <p class="mb-4 text-slate-600"><strong>Inheritance</strong> allows a class (child class) to inherit public and protected properties and methods from another class (parent class). This promotes code reusability. A child class can also <strong>override</strong> a parent's method to provide its own implementation.</p>
+                        <div class="code-block bg-slate-800 text-white p-4 rounded-md text-sm">
+                            <button class="copy-btn">Copy</button>
+                            <pre><code>&lt;?php
+class Animal {
+    public function eat() {
+        echo "This animal eats food.&lt;br&gt;";
+    }
+}
+
+class Dog extends Animal {
+    // Overriding the parent's eat() method
+    public function eat() {
+        echo "The dog eats dog food.&lt;br&gt;";
+    }
+}
+
+$myDog = new Dog();
+$myDog->eat(); // Calls the overridden method in the Dog class
+?&gt;</code></pre>
+                        </div>
+                    </article>
+
+                    <!-- Serialization -->
+                    <article id="serialization" class="mb-8 p-6 bg-white rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold mb-3">4. Serialization</h3>
+                        <p class="mb-4 text-slate-600"><strong>Serialization</strong> is the process of converting an object into a string representation, so it can be stored or transmitted. `serialize()` converts the object to a string, and `unserialize()` converts it back. The magic methods `__sleep()` and `__wakeup()` can be used to manage resources during this process.</p>
+                        <div class="code-block bg-slate-800 text-white p-4 rounded-md text-sm">
+                            <button class="copy-btn">Copy</button>
+                            <pre><code>&lt;?php
+class User {
+    public $name;
+    private $db_connection;
+
+    public function __construct($name) {
+        $this->name = $name;
+    }
+
+    public function __sleep() {
+        // Return array of properties to serialize
+        return ['name'];
+    }
+
+    public function __wakeup() {
+        // Re-establish resources, e.g., DB connection
+    }
+}
+
+$user = new User("John Doe");
+$serializedUser = serialize($user);
+echo $serializedUser;
+?&gt;</code></pre>
+                        </div>
+                    </article>
+
+                    <!-- Magic Methods -->
+                    <article id="magic-methods" class="mb-8 p-6 bg-white rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold mb-3">5. Magic Methods</h3>
+                        <p class="mb-4 text-slate-600"><strong>Magic Methods</strong> are special methods prefixed with `__` that are executed in response to certain events. For example, `__toString()` is called when an object is treated as a string.</p>
+                        <div class="code-block bg-slate-800 text-white p-4 rounded-md text-sm">
+                            <button class="copy-btn">Copy</button>
+                            <pre><code>&lt;?php
+class Book {
+    public $title;
+    public $author;
+
+    public function __construct($title, $author) {
+        $this->title = $title;
+        $this->author = $author;
+    }
+
+    public function __toString() {
+        return "'" . $this->title . "' by " . $this->author;
+    }
+}
+
+$book = new Book("1984", "George Orwell");
+echo $book; // Automatically calls __toString()
+?&gt;</code></pre>
+                        </div>
+                    </article>
+                </section>
+
+                <!-- MySQL Section -->
+                <section id="mysql" class="mb-16">
+                    <h2 class="text-3xl font-bold border-b border-stone-200 pb-2 mb-6">MySQL with PHP: MySQLi vs. PDO</h2>
+                    <p class="mb-8 text-slate-600">PHP offers two primary ways to connect to a MySQL database: the MySQLi (Improved) extension and PDO (PHP Data Objects). PDO is generally preferred for its flexibility, as it can connect to various database systems, not just MySQL.</p>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <article>
+                            <h3 class="text-2xl font-semibold mb-3">MySQLi (Object-Oriented)</h3>
+                            <div class="code-block bg-slate-800 text-white p-4 rounded-md text-sm">
+                                <button class="copy-btn">Copy</button>
+                                <pre><code>&lt;?php
+$servername = "localhost";
+$username = "user";
+$password = "pass";
+$dbname = "myDB";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+$stmt = $conn->prepare("SELECT id, name FROM users WHERE id = ?");
+$stmt->bind_param("i", $id);
+$id = 1;
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+$stmt->close();
+$conn->close();
+?&gt;</code></pre>
+                            </div>
+                        </article>
+                        <article>
+                            <h3 class="text-2xl font-semibold mb-3">PDO</h3>
+                            <div class="code-block bg-slate-800 text-white p-4 rounded-md text-sm">
+                                <button class="copy-btn">Copy</button>
+                                <pre><code>&lt;?php
+$servername = "localhost";
+$username = "user";
+$password = "pass";
+$dbname = "myDB";
+
+try {
+  $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  $stmt = $conn->prepare("SELECT id, name FROM users WHERE id = :id");
+  $stmt->execute(['id' => 1]);
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+} catch(PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
+}
+$conn = null;
+?&gt;</code></pre>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- REST API Section -->
+                <section id="rest" class="mb-16">
+                    <h2 class="text-3xl font-bold border-b border-stone-200 pb-2 mb-6">REST API Principles & Workflow</h2>
+                    <p class="mb-8 text-slate-600">A REST API is an architectural style for designing networked applications. It relies on a stateless, client-server communication protocol—almost always HTTP. REST provides a set of constraints that, when applied, yield a scalable, reliable, and easy-to-use web service.</p>
+                    <div class="space-y-4 mb-8">
+                        <p><strong>Key Principles:</strong> Client-Server, Stateless, Cacheable, Uniform Interface, Layered System.</p>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Typical Workflow</h3>
+                    <div class="flex flex-col md:flex-row gap-4 text-center">
+                        <div class="flow-step flex-1 bg-white p-4 rounded-lg shadow-sm">
+                            <div class="text-2xl mb-2">1. ➡️</div>
+                            <h4 class="font-semibold">Client Request</h4>
+                            <p class="text-sm text-slate-500">Client sends an HTTP request (e.g., GET /users/123) to the server.</p>
+                        </div>
+                        <div class="flow-step flex-1 bg-white p-4 rounded-lg shadow-sm">
+                            <div class="text-2xl mb-2">2. ⚙️</div>
+                            <h4 class="font-semibold">Server Processes</h4>
+                            <p class="text-sm text-slate-500">Server receives, authenticates, and processes the request to fetch the resource.</p>
+                        </div>
+                        <div class="flow-step flex-1 bg-white p-4 rounded-lg shadow-sm">
+                            <div class="text-2xl mb-2">3. ⬅️</div>
+                            <h4 class="font-semibold">Server Response</h4>
+                            <p class="text-sm text-slate-500">Server sends a response (e.g., JSON data with status 200 OK) back to the client.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AJAX Section -->
+                <section id="ajax" class="mb-16">
+                    <h2 class="text-3xl font-bold border-b border-stone-200 pb-2 mb-6">AJAX Workflow</h2>
+                    <p class="mb-8 text-slate-600">AJAX (Asynchronous JavaScript and XML) allows web pages to be updated asynchronously by exchanging data with a server behind the scenes. This means you can update parts of a web page without reloading the whole page.</p>
+                    
+                    <h3 class="text-2xl font-semibold mb-4">Workflow Diagram</h3>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="text-center">
+                                <div class="text-4xl">🖥️</div>
+                                <p class="font-semibold mt-2">1. User Event</p>
+                            </div>
+                            <div class="text-teal-500 font-bold text-2xl">→</div>
+                            <div class="text-center">
+                                <div class="text-4xl">JS</div>
+                                <p class="font-semibold mt-2">2. XHR Request</p>
+                            </div>
+                            <div class="text-teal-500 font-bold text-2xl">↔️</div>
+                            <div class="text-center">
+                                <div class="text-4xl">🌐</div>
+                                <p class="font-semibold mt-2">3. Server</p>
+                            </div>
+                             <div class="text-teal-500 font-bold text-2xl">→</div>
+                            <div class="text-center">
+                                <div class="text-4xl">📄</div>
+                                <p class="font-semibold mt-2">4. Page Update</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-semibold mt-8 mb-3">XMLHttpRequest (XHR) Object</h3>
+                    <p class="mb-4 text-slate-600">The XHR object is the core of AJAX. It is used to send HTTP requests to a server and receive responses.</p>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="font-semibold mb-2">Key Properties:</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li><strong>onreadystatechange:</strong> Function called when `readyState` changes.</li>
+                                <li><strong>readyState:</strong> Holds the request status (0-4).</li>
+                                <li><strong>status:</strong> HTTP status code (e.g., 200, 404).</li>
+                                <li><strong>responseText:</strong> Response as a string.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">Key Methods:</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li><strong>open(method, url, async):</strong> Initializes a request.</li>
+                                <li><strong>send(body):</strong> Sends the request.</li>
+                                <li><strong>setRequestHeader(h, v):</strong> Sets an HTTP header.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="code-block bg-slate-800 text-white p-4 rounded-md text-sm mt-4">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code>function loadData() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "data.txt", true);
+  xhttp.send();
+}</code></pre>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const code = this.nextElementSibling.querySelector('code').innerText;
+                    
+                    const el = document.createElement('textarea');
+                    el.value = code;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+
+                    this.innerText = 'Copied!';
+                    setTimeout(() => {
+                        this.innerText = 'Copy';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
