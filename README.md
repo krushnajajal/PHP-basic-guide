@@ -26,27 +26,7 @@ To get a local copy up and running, follow these simple steps.
 You need to have Node.js and npm (or yarn) installed on your machine.
 * [Node.js](https://nodejs.org/)
 
-### Installation
 
-1.  **Clone the repo**
-    ```sh
-    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
-    ```
-2.  **Navigate to the project directory**
-    ```sh
-    cd your-repo-name
-    ```
-3.  **Install NPM packages**
-    ```sh
-    npm install
-    ```
-4.  **Run the development server**
-    ```sh
-    npm start
-    ```
-    The application will open in your browser at `http://localhost:3000`.
-
-##(Deployment)
 
 This application is set up for easy deployment to GitHub Pages.
 
